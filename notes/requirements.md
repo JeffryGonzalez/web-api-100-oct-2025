@@ -38,9 +38,6 @@ example: `https://api.company.com/software-center/vendors`
 - the path - /software-center/vendors - the part we have control over as developers.
 
 
-/tickets - https://ticketmaster.com/tickets
-/tickets - https://cpd.gov/tickets
-
 ## Catalog Items
 
 Catalog items are instances of software a vendor provides.

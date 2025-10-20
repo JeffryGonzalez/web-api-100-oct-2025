@@ -27,3 +27,5 @@ app.MapControllers(); // this uses .NET reflection to scan your application and 
 //  - Call the GetAllVendors method.
 
 app.Run(); // kestrel web server 
+
+public partial class Program; // willing to explain later if you want. .NET 10 (next week) won't require this.
