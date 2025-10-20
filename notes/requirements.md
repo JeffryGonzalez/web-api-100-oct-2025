@@ -18,6 +18,29 @@ We have arrangements with vendors. Each vendor has:
 
 Vendors have a set of software they provide that we support.
 
+Resource: `/vendors` - (collection resource)
+
+```http
+GET http://localhost:1337/vendors
+Accept: application/json
+```
+
+Resources have a name, the name is technically a URI in the form of:
+
+example: `https://api.company.com/software-center/vendors`
+
+- "The Scheme" (https://) - can be either http or https. 
+  - the port.
+    - http uses tcp port 80 by default
+    - https uses tcp port 443 by default.
+    - if you are using something else, you have to specify it.
+- "Authority" - api.company.com - server, the "origin" 
+- the path - /software-center/vendors - the part we have control over as developers.
+
+
+/tickets - https://ticketmaster.com/tickets
+/tickets - https://cpd.gov/tickets
+
 ## Catalog Items
 
 Catalog items are instances of software a vendor provides.
