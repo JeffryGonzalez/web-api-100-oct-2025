@@ -25,6 +25,20 @@ GET http://localhost:1337/vendors
 Accept: application/json
 ```
 
+```http
+POST http://localhost:1337/vendors
+Content-Type: application/json
+
+{
+  "name": "Apple",
+  "pointOfContact": {
+    "name": "Tim Apple",
+    "email": "tim@apple.com",
+    "phone": "888 999-9999"
+  }
+}
+```
+
 Resources have a name, the name is technically a URI in the form of:
 
 example: `https://api.company.com/software-center/vendors`
