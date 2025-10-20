@@ -53,3 +53,5 @@ if (monkey1.Name != null)
 {
     Console.WriteLine("Monkey has no name");
 }
+
+// some additional stuff was added.
