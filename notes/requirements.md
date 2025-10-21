@@ -30,9 +30,10 @@ POST http://localhost:1337/vendors
 Content-Type: application/json
 
 {
-  "name": "Some Name",
+  "name": "Microsoft",
   "pointOfContact": {
     "name": "Bob Jones",
+    "companyName": "Geico",
     "phone": "some-phone",
     "email": "some@email.com"
 
