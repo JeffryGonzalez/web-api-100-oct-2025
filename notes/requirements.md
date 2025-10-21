@@ -30,11 +30,12 @@ POST http://localhost:1337/vendors
 Content-Type: application/json
 
 {
-  "name": "Jetbrains",
+  "name": "Some Name",
   "pointOfContact": {
     "name": "Bob Jones",
-    "email": "bob@jetbrains.com",
-    "phone": "888 999-9999"
+    "phone": "some-phone",
+    "email": "some@email.com"
+
   }
 }
 ```

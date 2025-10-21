@@ -1,6 +1,6 @@
 ﻿
 using Alba;
-using SoftwareCenter.Api.Vendors;
+using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Tests.Vendors;
 public class CanAddAVendor

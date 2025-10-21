@@ -1,6 +1,9 @@
 ﻿
 
+
 using Marten;
+using SoftwareCenter.Api.Vendors.Entities;
+using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Api.Vendors;
 
@@ -27,12 +30,23 @@ public class VendorsController(IDocumentSession session) : ControllerBase
 
     [HttpPost("/vendors")]
     public async Task<ActionResult> AddVendorAsync(
-        [FromBody] VendorCreateModel model
+        [FromBody] VendorCreateModel model,
+        [FromServices] VendorCreateModelValidator validator
         )
 
     {
 
         // TODO: Validate the inputs, check auth all that stuff
+        //if(!ModelState.IsValid)
+        //{
+        //    return BadRequest(ModelState);
+        //}
+       var validations = await validator.ValidateAsync(model);
+
+        if(!validations.IsValid)
+        {
+            return BadRequest();
+        }
 
         // store the data somewhere
 
@@ -80,45 +94,4 @@ public class VendorsController(IDocumentSession session) : ControllerBase
 }
 
 
-/*{
-  "name": "Microsoft",
-  "pointOfContact": {
-    "name": "Satya Nadella",
-    "email": "satya@microsoft.com",
-    "phone": "888 999-9999"
-  }
-}*/
-
-public record VendorPointOfContact
-{
-    public string Name { get; set; } = string.Empty;
-    public string EMail { get; set; } = string.Empty;
-    public string Phone { get; set; } = string.Empty;
-}
-
-
-// this represents what we are expecting from the client on the POST /vendors
-public record VendorCreateModel
-{
-    public string Name { get; set; } = string.Empty;
-    public VendorPointOfContact PointOfContact { get; set; } = new();
-}
-
-// what I am returning to the caller on the POST and the GET /vendors/{id}
-public record VendorDetailsModel
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public VendorPointOfContact PointOfContact { get; set; } = new();
-}
-
-
-// what I'm actually storing in the database
-public class VendorEntity
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public VendorPointOfContact PointOfContact { get; set; } = new();
-    // who created this??
-}
 
