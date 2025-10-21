@@ -7,6 +7,24 @@ builder.Services.AddControllers(); // going to eat some of the time to start thi
 builder.Services.AddOpenApi();
 
 // above this line is configuring services and opting in to .NET features.
+
+// ask my environment for the connection string to my database
+
+var connectionString = builder.Configuration.GetConnectionString("software") ?? 
+    throw new Exception("No software connection string found!");
+
+
+// look a lot of places - and it always looks in all the places, even if it already found it.
+// 1. appsettings.json
+// 2. appsettings.{ASPNETCORE_ENVIRONMENT}.json
+// 3. looks in the "secrets" in visual studio. Not showing this.
+// 4. look in an environment variable on the machine it is running on
+//    In this example it would look for connectionstrings__software 
+// 5. it will look on the comand line when you do "dotnet run" 
+ 
+// set up my "service" that will connect to the database
+
+
 var app = builder.Build();
 // after this line is configuring the HTTP "middleware" - how are actual requests and responses 
 // generated.
