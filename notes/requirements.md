@@ -39,6 +39,19 @@ Content-Type: application/json
 }
 ```
 
+
+PUT  http://localhost:1337/vendors/8bb13b4a-a6e3-4e24-bf0f-0d74c60ea149/point-of-contact
+
+{
+  "name": "brenda",
+  "email": blah,
+  "phone": 939399
+}
+
+DELETE http://localhost:1337/vendors/8bb13b4a-a6e3-4e24-bf0f-0d74c60ea149/
+
+
+
 Resources have a name, the name is technically a URI in the form of:
 
 example: `https://api.company.com/software-center/vendors`
