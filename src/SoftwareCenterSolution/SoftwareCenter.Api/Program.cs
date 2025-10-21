@@ -25,6 +25,9 @@ app.MapControllers(); // this uses .NET reflection to scan your application and 
 // GET requests to /vendors
 //  - Create an instance of the VendorsController
 //  - Call the GetAllVendors method.
+// GET requests to /vendors/{id} where id loooks like a Guid
+//  - create the VendorsController
+//  - call the GetVendorById method with that id from the url.
 
 app.Run(); // kestrel web server 
 

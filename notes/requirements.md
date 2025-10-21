@@ -39,6 +39,10 @@ Content-Type: application/json
 }
 ```
 
+```http
+GET http://localhost:1337/vendors/9df04ccc-99f2-4b3a-a053-8e3596bba291
+
+```
 
 PUT  http://localhost:1337/vendors/8bb13b4a-a6e3-4e24-bf0f-0d74c60ea149/point-of-contact
 

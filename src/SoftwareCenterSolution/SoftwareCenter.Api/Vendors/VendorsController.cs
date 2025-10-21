@@ -28,6 +28,12 @@ public class VendorsController : ControllerBase
         };
         return StatusCode(201, response); // "Created"
     }
+    // GET /vendors/tacos
+    [HttpGet("/vendors/{id:Guid}")]
+    public async Task<ActionResult> GetVendorByIdAsync(Guid id)
+    {
+        return BadRequest();
+    }
 }
 
 
