@@ -21,6 +21,7 @@ public class VendorsController(IDocumentSession session) : ControllerBase
     [HttpGet("/vendors")]
     public async Task<ActionResult> GetAllVendorsAsync()
     {
+
         return Ok();
     }
 
