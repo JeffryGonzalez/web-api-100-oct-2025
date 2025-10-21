@@ -1,3 +1,6 @@
+
+using Marten;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,8 +24,15 @@ var connectionString = builder.Configuration.GetConnectionString("software") ??
 // 4. look in an environment variable on the machine it is running on
 //    In this example it would look for connectionstrings__software 
 // 5. it will look on the comand line when you do "dotnet run" 
- 
+
 // set up my "service" that will connect to the database
+//builder.Services.AddDbContext<MyDbContext>(c => { ... });
+builder.Services.AddMarten(config =>
+{
+    config.Connection(connectionString);
+}).UseLightweightSessions(); 
+// It will provide an object that implements A context class.
+// IDocumentSession
 
 
 var app = builder.Build();
@@ -43,6 +53,10 @@ app.MapControllers(); // this uses .NET reflection to scan your application and 
 // GET requests to /vendors
 //  - Create an instance of the VendorsController
 //  - Call the GetAllVendors method.
+// POST /vendors
+// - create an instance of the vendors controller
+// - call the addvendor method
+// - but they this is going to need an IDocumentSession 
 // GET requests to /vendors/{id} where id loooks like a Guid
 //  - create the VendorsController
 //  - call the GetVendorById method with that id from the url.

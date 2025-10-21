@@ -30,17 +30,17 @@ POST http://localhost:1337/vendors
 Content-Type: application/json
 
 {
-  "name": "Apple",
+  "name": "Jetbrains",
   "pointOfContact": {
-    "name": "Tim Apple",
-    "email": "tim@apple.com",
+    "name": "Bob Jones",
+    "email": "bob@jetbrains.com",
     "phone": "888 999-9999"
   }
 }
 ```
 
 ```http
-GET http://localhost:1337/vendors/9df04ccc-99f2-4b3a-a053-8e3596bba291
+GET http://localhost:1337/vendors/tacos
 
 ```
 
