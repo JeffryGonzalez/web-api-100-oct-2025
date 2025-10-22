@@ -1,9 +1,4 @@
-﻿
-
-
-using Marten;
-using SoftwareCenter.Api.Vendors.Entities;
-using SoftwareCenter.Api.Vendors.Models;
+﻿using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Api.Vendors;
 
@@ -11,73 +6,40 @@ namespace SoftwareCenter.Api.Vendors;
 // When we get a GET request to "/vendors", we want this controller to be created, and
 // a specific method on this controller to handle providing the response for the request.
 
-public class VendorsController(IDocumentSession session) : ControllerBase
+public class VendorsController(IManageVendors vendorManager) : ControllerBase
 {
+    // controllers should receive the http request, validate it,
+    // and create a response to send to the caller.
 
-    //private IDocumentSession _documentSession;
 
-    //public VendorsController(IDocumentSession documentSession)
-    //{
-    //    _documentSession = documentSession;
-    //}
 
     [HttpGet("/vendors")]
     public async Task<ActionResult> GetAllVendorsAsync()
     {
-        var vendors = await session.Query<VendorEntity>()
-            .OrderBy( v=> v.Name ).ToListAsync();
 
-        var response = new CollectionResponseModel<VendorSummaryItem>();
-
-        response.Data = vendors.Select(v => new VendorSummaryItem
-        {
-            Id = v.Id,
-            Name = v.Name,
-        }).ToList();
-
+        CollectionResponseModel<VendorSummaryItem> response = await vendorManager.GetAllVendorsAsync();
         return Ok(response);
-        // What if there are no vendors? What should your return:
-        // NOT A 404.
-        // { data: [] }
+       
     }
 
     [HttpPost("/vendors")]
     public async Task<ActionResult> AddVendorAsync(
-        [FromBody] VendorCreateModel model,
+        [FromBody] VendorCreateModel request,
         [FromServices] VendorCreateModelValidator validator
         )
 
     {
 
-        // TODO: Validate the inputs, check auth all that stuff
-        //if(!ModelState.IsValid)
-        //{
-        //    return BadRequest(ModelState);
-        //}
-       var validations = await validator.ValidateAsync(model);
+       var validations = await validator.ValidateAsync(request);
 
         if(!validations.IsValid)
         {
             return BadRequest();
         }
 
-        // store the data somewhere
+     
 
-        var entity = new VendorEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = model.Name,
-            PointOfContact = model.PointOfContact,
-        };
-        session.Store(entity);
-        await session.SaveChangesAsync();
-
-        var response = new VendorDetailsModel
-        {
-            Id = entity.Id,
-            Name = entity.Name,
-            PointOfContact = entity.PointOfContact,
-        };
+        VendorDetailsModel response = await vendorManager.AddVendorAsync(request);
 
         
         return StatusCode(201, response); // "Created"
@@ -86,23 +48,12 @@ public class VendorsController(IDocumentSession session) : ControllerBase
     [HttpGet("/vendors/{id:guid}")]
     public async Task<ActionResult> GetVendorByIdAsync(Guid id)
     {
-        var savedVendor = await session.Query<VendorEntity>()
-            .Where(v => v.Id == id)
-            .SingleOrDefaultAsync();
-        if (savedVendor == null)
+        VendorDetailsModel? response = await vendorManager.GetVendorByIdAsync(id);
+        return response switch
         {
-            return NotFound();
-        }
-        else
-        {
-            var response = new VendorDetailsModel
-            {
-                Id = savedVendor.Id,
-                Name = savedVendor.Name,
-                PointOfContact = savedVendor.PointOfContact,
-            };
-            return Ok(response);
-        }
+            null => NotFound(),
+            _ => Ok(response)
+        };
     }
 }
 

@@ -41,6 +41,8 @@ builder.Services.AddMarten(config =>
 //builder.Services.AddScoped<VendorCreateModelValidator>();
 builder.Services.AddVendorServices();
 
+builder.Services.AddScoped<IManageVendors, MartenPostgresVendorManager>();
+
 
 var app = builder.Build();
 // after this line is configuring the HTTP "middleware" - how are actual requests and responses 

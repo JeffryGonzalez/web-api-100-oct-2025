@@ -2,6 +2,7 @@
 
 
 global using DotnetAndCSharp.Zoo;
+using DotnetAndCSharp;
 
 Console.WriteLine("Hello, Again");
 
@@ -55,3 +56,7 @@ if (monkey1.Name != null)
 }
 
 // some additional stuff was added.
+
+
+var doug = new Employee();
+doug.GiveBigRaise(3000);
