@@ -24,7 +24,21 @@ Resource: `/vendors` - (collection resource)
 GET http://localhost:1337/vendors
 Accept: application/json
 ```
+// dont' send arrays, always send "documents"
 
+```http
+200 Ok
+Content-Type:application-json
+
+{
+
+"data": [
+  { id: 33, name: 'Microsoft'}
+],
+
+}
+
+```
 ```http
 POST http://localhost:1337/vendors
 Content-Type: application/json

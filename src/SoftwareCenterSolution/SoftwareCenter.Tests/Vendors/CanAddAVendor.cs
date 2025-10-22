@@ -3,6 +3,8 @@ using Alba;
 using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Tests.Vendors;
+[Trait("Category", "System")]
+
 public class CanAddAVendor
 {
 

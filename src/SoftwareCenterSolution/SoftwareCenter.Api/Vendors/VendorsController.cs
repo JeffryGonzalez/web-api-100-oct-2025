@@ -24,8 +24,21 @@ public class VendorsController(IDocumentSession session) : ControllerBase
     [HttpGet("/vendors")]
     public async Task<ActionResult> GetAllVendorsAsync()
     {
+        var vendors = await session.Query<VendorEntity>()
+            .OrderBy( v=> v.Name ).ToListAsync();
 
-        return Ok();
+        var response = new CollectionResponseModel<VendorSummaryItem>();
+
+        response.Data = vendors.Select(v => new VendorSummaryItem
+        {
+            Id = v.Id,
+            Name = v.Name,
+        }).ToList();
+
+        return Ok(response);
+        // What if there are no vendors? What should your return:
+        // NOT A 404.
+        // { data: [] }
     }
 
     [HttpPost("/vendors")]
