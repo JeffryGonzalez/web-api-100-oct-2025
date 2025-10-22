@@ -94,3 +94,15 @@ Accept: application/json
    3. If the model is not valid, return a `400 Bad Request`. 
    4. Create another test class in the test project that POSTs just *one* example of a bad request to verify your validation is working correctly.
       1. We will look at other techniques to test validation after the lab.
+
+
+
+# Bad Guy Example
+
+
+```http
+POST http://localhost:1338/api/shows
+Content-Type: application/json
+
+{"name":"","streamingService":"MyHouse"}
+```
