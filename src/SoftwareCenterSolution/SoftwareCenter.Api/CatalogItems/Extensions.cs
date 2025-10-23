@@ -23,7 +23,8 @@ public static class Extensions
         var group = app.MapGroup("vendors");
         // /vendors/934893489384/catalog
         group.MapGet("/{vendorId:guid}/catalog", GetAllCatalogItemsForVendor.Handle);
-        group.MapPost("/{vendorId:guid}/catalog", AddingAVendor.Handle);
+        group.MapPost("/{vendorId:guid}/catalog", AddingACatalogItem.Handle);
+        group.MapDelete("/{vendorId:guid}/catalog/{catalogItemId:guid}", DeleteCatalogItemById.Handle);
         return app;
     }
 }
