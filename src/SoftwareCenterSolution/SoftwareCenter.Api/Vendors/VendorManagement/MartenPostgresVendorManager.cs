@@ -11,12 +11,7 @@ public class MartenPostgresVendorManager(IDocumentSession session, IHttpContextA
 {
     public async Task<VendorDetailsModel> AddVendorAsync(VendorCreateModel request)
     {
-        if(context.HttpContext == null)
-        {
-            throw new Exception("Cannot be used in unathorized requests");
-        }
-        var userSub = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value  ?? throw new Exception("no sub");
-        var entity = request.MapToEntity(userSub);
+        var entity = request.MapToEntity(GetUserSub());
         session.Store(entity);
         await session.SaveChangesAsync();
         return entity.MapToResponse();
@@ -45,5 +40,34 @@ public class MartenPostgresVendorManager(IDocumentSession session, IHttpContextA
             _ => savedVendor.MapToResponse()
         };
 
+    }
+
+    public async Task<ApiResults> UpdateVendorPocAsync(Guid id, VendorPointOfContact request)
+    {
+        var vendor = await session.Query<VendorEntity>().SingleOrDefaultAsync(v => v.Id == id);
+        if (vendor == null)
+        {
+            return ApiResults.NotFound;
+        }
+        if(vendor.CreatedBy != GetUserSub())
+        {
+            return ApiResults.Unathorized;
+        }
+        vendor.PointOfContact = request;
+        session.Store(vendor);
+
+
+        await session.SaveChangesAsync();
+        return ApiResults.Succceded;
+    }
+
+    private string GetUserSub()
+    {
+        if (context.HttpContext == null)
+        {
+            throw new Exception("Cannot be used in unathorized requests");
+        }
+        var userSub = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value ?? throw new Exception("no sub");
+        return userSub;
     }
 }

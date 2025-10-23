@@ -17,8 +17,4 @@
     <PackageReference Include="Riok.Mapperly" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CatalogItems\Services\" />
-  </ItemGroup>
-
 </Project>

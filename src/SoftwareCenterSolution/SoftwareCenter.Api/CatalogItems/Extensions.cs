@@ -1,6 +1,7 @@
 ﻿using Marten;
 using SoftwareCenter.Api.CatalogItems.Endpoints;
 using SoftwareCenter.Api.CatalogItems.Entities;
+using SoftwareCenter.Api.CatalogItems.Services;
 
 namespace SoftwareCenter.Api.CatalogItems;
 
@@ -9,6 +10,7 @@ public static class Extensions
     public static IServiceCollection AddCatalogItems(this IServiceCollection services)
     {
         // add feature specific services here
+        services.AddScoped<MartenPostgresCatalogManager>();
         return services;
     }
 
@@ -16,7 +18,7 @@ public static class Extensions
     {
         app.MapGet("catalog-items", async (IDocumentSession session) =>
         {
-            var catalog = await session.Query<CatalogItem>().ToListAsync();
+            var catalog = await session.Query<CatalogItemEntity>().ToListAsync();
             return catalog;
         });
         // whatever I map as part of this group is going to be at "/vendors";

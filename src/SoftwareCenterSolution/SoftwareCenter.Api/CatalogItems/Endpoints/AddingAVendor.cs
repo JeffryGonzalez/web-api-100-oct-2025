@@ -2,36 +2,27 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using SoftwareCenter.Api.CatalogItems.Entities;
 using SoftwareCenter.Api.CatalogItems.Models;
+using SoftwareCenter.Api.CatalogItems.Services;
+using SoftwareCenter.Api.Vendors.Entities;
 
 namespace SoftwareCenter.Api.CatalogItems.Endpoints;
 
 public static class AddingAVendor
 {
-    public static async Task<Results<Ok<CatalogItem>, BadRequest>> Handle(
+    public static async Task<Results<Ok<CatalogItemDetails>, NotFound<string>>> Handle(
         CatalogItemCreateModel request,
-        IDocumentSession session,
+       MartenPostgresCatalogManager catalogManager,
         Guid vendorId
         )
     {
-        // todo: Probably should check if that vendor exists.
-        var catalogItemExists = await session.Query<CatalogItem>()
-            .Where(c => c.VendorId == vendorId && c.Name == request.Name)
-            .AnyAsync();
-        if (catalogItemExists) 
-        {
-            return TypedResults.BadRequest();
-        }
-        // validate...
-        var entity = new CatalogItem
-        {
-            Id = Guid.NewGuid(),
-            VendorId = vendorId,
-            Name = request.Name,
-            Description = request.Description,
-        }; // Todo: Mapper would be nice, right?
+        var (results, response) = await catalogManager.AddCatalogItemAsync(request, vendorId);
 
-        session.Store(entity);
-        await session.SaveChangesAsync();
-        return TypedResults.Ok(entity); // Make a response model for this.
+        return results switch
+        {
+            ApiResults.NotFound => TypedResults.NotFound("No Vendor With That Id"),
+            ApiResults.Succceded => TypedResults.Ok(response),
+            _ => throw new NotImplementedException()
+        };
+       
     }
 }

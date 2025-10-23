@@ -45,7 +45,7 @@ builder.Services.AddMarten(config =>
 {
     config.Connection(connectionString);
     config.RegisterDocumentType<VendorEntity>();
-    config.RegisterDocumentType<CatalogItem>();
+    config.RegisterDocumentType<CatalogItemEntity>();
 }).UseLightweightSessions();
 // It will provide an object that implements A context class.
 // IDocumentSession

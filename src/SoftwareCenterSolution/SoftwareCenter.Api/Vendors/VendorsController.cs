@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Marten;
+using Microsoft.AspNetCore.Authorization;
+using SoftwareCenter.Api.Vendors.Entities;
 using SoftwareCenter.Api.Vendors.Models;
 using SoftwareCenter.Api.Vendors.VendorManagement;
 
@@ -9,15 +11,15 @@ namespace SoftwareCenter.Api.Vendors;
 public class VendorsController(IManageVendors vendorManager) : ControllerBase
 {
 
-  
+
 
     [HttpGet("/vendors")]
     public async Task<ActionResult> GetAllVendorsAsync()
     {
         var user = User.Identity;
         var response = await vendorManager.GetAllVendorsAsync();
-       // return NotFound();
-        return Ok(response);  
+        // return NotFound();
+        return Ok(response);
     }
     [Authorize(Policy = "software-center-manager")]
     [HttpPost("/vendors")]
@@ -27,12 +29,12 @@ public class VendorsController(IManageVendors vendorManager) : ControllerBase
         )
 
     {
-       var validations = await validator.ValidateAsync(request);
-        if(!validations.IsValid)
+        var validations = await validator.ValidateAsync(request);
+        if (!validations.IsValid)
         {
             return BadRequest();
         }
-       var response = await vendorManager.AddVendorAsync(request);      
+        var response = await vendorManager.AddVendorAsync(request);
         return StatusCode(201, response); // "Created"
     }
     [HttpGet("/vendors/{id:guid}")]
@@ -44,6 +46,22 @@ public class VendorsController(IManageVendors vendorManager) : ControllerBase
         {
             null => NotFound(),
             _ => Ok(response)
+        };
+    }
+
+    [HttpPut("/vendors/{id:guid}/point-of-contact")]
+    public async Task<ActionResult> UpdatePoc(Guid id,
+        [FromBody] VendorPointOfContact request
+
+        )
+    {
+        var reason = await vendorManager.UpdateVendorPocAsync(id, request);
+        return reason switch
+        {
+            ApiResults.NotFound => NotFound(),
+            ApiResults.Unathorized => StatusCode(403),
+            ApiResults.Succceded => Accepted(),
+            _ => throw new NotImplementedException()
         };
     }
 }
