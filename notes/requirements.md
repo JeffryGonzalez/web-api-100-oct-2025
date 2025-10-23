@@ -42,12 +42,13 @@ Content-Type:application-json
 ```http
 POST http://localhost:1337/vendors
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN1ZUBhb2wuY29tIiwic3ViIjoic3VlQGFvbC5jb20iLCJqdGkiOiJhOWMyY2UxZSIsInJvbGUiOlsiU29mdHdhcmVDZW50ZXIiLCJNYW5hZ2VyIl0sImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MTMzNyIsIm5iZiI6MTc2MTI0ODIzNCwiZXhwIjoxODU1ODU2MjM0LCJpYXQiOjE3NjEyNDgyMzUsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.vMmRh-FcuO5dHt0TBirwpp_ZWGEN7wy_y-mez2GASqE
 
 {
   "name": "Microsoft",
   "pointOfContact": {
-    "name": "Bob Jones",
-    "companyName": "Geico",
+    "name": "Tony Bob",
+    "companyName": "All State",
     "phone": "some-phone",
     "email": "some@email.com"
 
@@ -120,20 +121,19 @@ Any employee in the company can use our API to get a full list of the software c
     - and some of them are managers of that team
 
 
-
 ## The Catalog Items
 
 ### Find a Vendor
 ```http
 GET http://localhost:1337/vendors
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImplZmYiLCJzdWIiOiJqZWZmIiwianRpIjoiYWIyMGRmY2MiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyMzQ1MzQsImV4cCI6MTc2OTE4MzMzNCwiaWF0IjoxNzYxMjM0NTM3LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.KMXGN-9mOfzwX8UFLP43hhqhI7jXi9yj85Y70xxbhQ8
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN1ZUBhb2wuY29tIiwic3ViIjoic3VlQGFvbC5jb20iLCJqdGkiOiJhOWMyY2UxZSIsInJvbGUiOlsiU29mdHdhcmVDZW50ZXIiLCJNYW5hZ2VyIl0sImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MTMzNyIsIm5iZiI6MTc2MTI0ODIzNCwiZXhwIjoxODU1ODU2MjM0LCJpYXQiOjE3NjEyNDgyMzUsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.vMmRh-FcuO5dHt0TBirwpp_ZWGEN7wy_y-mez2GASqE
 ```
 
 ### Get a List of Catalog Items For That Vendor 
 
 ```http
-GET http://localhost:1337/vendors/109acd9e-ce3e-43f5-88c1-d9658a87433f/catalog
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImplZmYiLCJzdWIiOiJqZWZmIiwianRpIjoiYWIyMGRmY2MiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyMzQ1MzQsImV4cCI6MTc2OTE4MzMzNCwiaWF0IjoxNzYxMjM0NTM3LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.KMXGN-9mOfzwX8UFLP43hhqhI7jXi9yj85Y70xxbhQ8
+GET http://localhost:1337/vendors/9f906499-8f1f-40df-97ff-790edb38f1b3/catalog
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN1ZUBhb2wuY29tIiwic3ViIjoic3VlQGFvbC5jb20iLCJqdGkiOiJhOWMyY2UxZSIsInJvbGUiOlsiU29mdHdhcmVDZW50ZXIiLCJNYW5hZ2VyIl0sImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MTMzNyIsIm5iZiI6MTc2MTI0ODIzNCwiZXhwIjoxODU1ODU2MjM0LCJpYXQiOjE3NjEyNDgyMzUsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.vMmRh-FcuO5dHt0TBirwpp_ZWGEN7wy_y-mez2GASqE
 ```
 
 ### Get All Catalog Items
@@ -149,11 +149,22 @@ GET http://localhost:1337/catalog-items
 - Must be a member of the software team
 
 ```http
-POST http://localhost:1337/vendors/0679baa8-1533-4a20-9058-246f666f211e/catalog
+POST http://localhost:1337/vendors/9f906499-8f1f-40df-97ff-790edb38f1b3/catalog
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN1ZUBhb2wuY29tIiwic3ViIjoic3VlQGFvbC5jb20iLCJqdGkiOiJhOWMyY2UxZSIsInJvbGUiOlsiU29mdHdhcmVDZW50ZXIiLCJNYW5hZ2VyIl0sImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MTMzNyIsIm5iZiI6MTc2MTI0ODIzNCwiZXhwIjoxODU1ODU2MjM0LCJpYXQiOjE3NjEyNDgyMzUsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.vMmRh-FcuO5dHt0TBirwpp_ZWGEN7wy_y-mez2GASqE
 
 {
   "name": "Visual Studio Code",
   "description": "An Editor For Developers"
+}
+```
+
+```http
+DELETE http://localhost:1337/vendors/9f906499-8f1f-40df-97ff-790edb38f1b3/catalog-items
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN1ZUBhb2wuY29tIiwic3ViIjoic3VlQGFvbC5jb20iLCJqdGkiOiJhOWMyY2UxZSIsInJvbGUiOlsiU29mdHdhcmVDZW50ZXIiLCJNYW5hZ2VyIl0sImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MTMzNyIsIm5iZiI6MTc2MTI0ODIzNCwiZXhwIjoxODU1ODU2MjM0LCJpYXQiOjE3NjEyNDgyMzUsImlzcyI6ImRvdG5ldC11c2VyLWp3dHMifQ.vMmRh-FcuO5dHt0TBirwpp_ZWGEN7wy_y-mez2GASqE
+
+{
+  "Name": "Visual Studio Code"
 }
 ```
