@@ -21,8 +21,9 @@ Vendors have a set of software they provide that we support.
 Resource: `/vendors` - (collection resource)
 
 ```http
-GET http://localhost:1337/vendors
+GET http://localhost:1337/vendors/7abbe878-aee6-4c38-9129-faace00f270b
 Accept: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkJvc3NtYW4iLCJzdWIiOiJCb3NzbWFuIiwianRpIjoiOGVjNDc5NmMiLCJyb2xlIjpbIk1hbmFnZXIiLCJTb2Z0d2FyZUNlbnRlciJdLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyNDgwMTgsImV4cCI6MTc2OTE5NjgxOCwiaWF0IjoxNzYxMjQ4MDE5LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.qIbNQkOU3XERae2rcFTHz4AP9ALTj2_lWBDJad6mDOo
 ```
 // dont' send arrays, always send "documents"
 
@@ -42,14 +43,15 @@ Content-Type:application-json
 ```http
 POST http://localhost:1337/vendors
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkJvc3NtYW4iLCJzdWIiOiJCb3NzbWFuIiwianRpIjoiOGVjNDc5NmMiLCJyb2xlIjpbIk1hbmFnZXIiLCJTb2Z0d2FyZUNlbnRlciJdLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyNDgwMTgsImV4cCI6MTc2OTE5NjgxOCwiaWF0IjoxNzYxMjQ4MDE5LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.qIbNQkOU3XERae2rcFTHz4AP9ALTj2_lWBDJad6mDOo
 
 {
-  "name": "Microsoft",
+  "name": "Mr Person's Place of Things",
   "pointOfContact": {
-    "name": "Bob Jones",
-    "companyName": "Geico",
-    "phone": "some-phone",
-    "email": "some@email.com"
+    "name": "Mr Person",
+    "companyName": "Mr Persons Place of things",
+    "phone": "111-222-3333",
+    "email": "Fake@email.com"
 
   }
 }
@@ -57,17 +59,20 @@ Content-Type: application/json
 
 ```http
 GET http://localhost:1337/vendors/tacos
-
 ```
 
-PUT  http://localhost:1337/vendors/8bb13b4a-a6e3-4e24-bf0f-0d74c60ea149/point-of-contact
+```http
+PUT http://localhost:1337/vendors/7abbe878-aee6-4c38-9129-faace00f270b/point-of-contact
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IkJvc3NtYW4iLCJzdWIiOiJCb3NzbWFuIiwianRpIjoiOGVjNDc5NmMiLCJyb2xlIjpbIk1hbmFnZXIiLCJTb2Z0d2FyZUNlbnRlciJdLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyNDgwMTgsImV4cCI6MTc2OTE5NjgxOCwiaWF0IjoxNzYxMjQ4MDE5LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.qIbNQkOU3XERae2rcFTHz4AP9ALTj2_lWBDJad6mDOo
 
 {
-  "name": "brenda",
-  "email": blah,
-  "phone": 939399
+  "name": "Mrs Person",
+  "email": "NotFake@email.com",
+  "phone": "222-333-4444"
 }
 
+```
 DELETE http://localhost:1337/vendors/8bb13b4a-a6e3-4e24-bf0f-0d74c60ea149/
 
 

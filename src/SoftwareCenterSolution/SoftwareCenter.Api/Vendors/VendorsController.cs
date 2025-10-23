@@ -9,8 +9,6 @@ namespace SoftwareCenter.Api.Vendors;
 public class VendorsController(IManageVendors vendorManager) : ControllerBase
 {
 
-  
-
     [HttpGet("/vendors")]
     public async Task<ActionResult> GetAllVendorsAsync()
     {
@@ -19,6 +17,7 @@ public class VendorsController(IManageVendors vendorManager) : ControllerBase
        // return NotFound();
         return Ok(response);  
     }
+
     [Authorize(Policy = "software-center-manager")]
     [HttpPost("/vendors")]
     public async Task<ActionResult> AddVendorAsync(
@@ -35,6 +34,7 @@ public class VendorsController(IManageVendors vendorManager) : ControllerBase
        var response = await vendorManager.AddVendorAsync(request);      
         return StatusCode(201, response); // "Created"
     }
+
     [HttpGet("/vendors/{id:guid}")]
     public async Task<ActionResult> GetVendorByIdAsync(Guid id)
     {
@@ -46,6 +46,38 @@ public class VendorsController(IManageVendors vendorManager) : ControllerBase
             _ => Ok(response)
         };
     }
+
+    [Authorize(Policy = "software-center-manager")]
+    [HttpPut("/vendors/{id:guid}/point-of-contact")]
+    public async Task<ActionResult> UpdateVendorPointOfContact(Guid id, 
+        [FromBody] VendorPointOfContact pointOfContactRequest,
+        [FromServices] VendorPointOfContactValidator validator)
+    {
+        if (pointOfContactRequest is null)
+            return BadRequest();
+
+        var validations = await validator.ValidateAsync(pointOfContactRequest);
+        if (!validations.IsValid)
+        {
+            return BadRequest();
+        }
+
+        var vendorCreator = await vendorManager.GetVendorCreatorAsync(id);
+        if (vendorCreator is null)
+            return NotFound();
+
+        var requestor = User?.Identity?.Name ?? "";
+        if (!vendorCreator.Equals(requestor))
+            return StatusCode(403);
+
+        var response = await vendorManager.UpdateVendorPointOfContactAsync(id, pointOfContactRequest);
+        return response switch
+        {
+            null => NotFound(),
+            _ => Ok(response)
+        };
+    }
+
 }
 
 

@@ -44,6 +44,34 @@ public class MartenPostgresVendorManager(IDocumentSession session, IHttpContextA
             null => null,
             _ => savedVendor.MapToResponse()
         };
+    }
 
+    public async Task<string?> GetVendorCreatorAsync(Guid id)
+    {
+        var savedVendor = await session.Query<VendorEntity>()
+            .Where(v => v.Id == id)
+            .SingleOrDefaultAsync();
+
+        if (savedVendor is null)
+            return default;
+
+        return savedVendor.CreatedBy;
+    }
+
+    public async Task<VendorPointOfContact?> UpdateVendorPointOfContactAsync(Guid id, VendorPointOfContact request)
+    {
+        var savedVendor = await session.Query<VendorEntity>()
+            .Where(v => v.Id == id)
+            .SingleOrDefaultAsync();
+
+        if (savedVendor is null)
+            return default;
+
+        savedVendor.PointOfContact = request;
+
+        session.Store(savedVendor);
+        await session.SaveChangesAsync();
+
+        return savedVendor.PointOfContact;
     }
 }
