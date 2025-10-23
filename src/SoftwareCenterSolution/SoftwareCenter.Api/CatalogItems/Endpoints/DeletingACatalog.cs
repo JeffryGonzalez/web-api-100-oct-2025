@@ -1,0 +1,30 @@
+﻿using Marten;
+using Microsoft.AspNetCore.Http.HttpResults;
+using SoftwareCenter.Api.CatalogItems.Entities;
+using SoftwareCenter.Api.Vendors.Entities;
+
+namespace SoftwareCenter.Api.CatalogItems.Endpoints;
+
+public static class DeletingACatalog
+{
+    public static async Task<Results<Ok<CatalogItem>, NotFound<string>>> Handle(
+        Guid vendorId,
+        Guid catalogItemId,
+        IDocumentSession session
+        ) 
+    {
+        var doesCatalogExist = await session.Query<CatalogItem>().AnyAsync(c => c.VendorId == vendorId && c.Id == catalogItemId);
+        if (doesCatalogExist)
+        {
+            var response = await session.Query<CatalogItem>()
+                .Where(c => c.VendorId == vendorId && c.Id == catalogItemId)
+                .FirstAsync();
+            session.DeleteWhere<CatalogItem>(c => c.VendorId == vendorId && c.Id == catalogItemId);
+            return TypedResults.Ok(response);
+        }
+        else
+        {
+            return TypedResults.NotFound("No Catalog Item With That Id");
+        }
+    }
+}
