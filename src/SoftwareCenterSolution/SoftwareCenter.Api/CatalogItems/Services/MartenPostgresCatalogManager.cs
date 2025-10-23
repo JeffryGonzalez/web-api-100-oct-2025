@@ -17,6 +17,13 @@ public class MartenPostgresCatalogManager(IDocumentSession session)
         {
            return  (ApiResults.NotFound, null);
         }
+        var catalogItemAlreadyExists = await session.Query<CatalogItemEntity>()
+            .Where(c => c.VendorId == vendorId && c.Name == model.Name)
+            .AnyAsync();
+        if (catalogItemAlreadyExists) 
+        {
+            return (ApiResults.BadRequest, null);
+        }
         var entity = new CatalogItemEntity
         {
             Id = Guid.NewGuid(),
