@@ -1,8 +1,9 @@
-﻿using SoftwareCenter.Api.Vendors.Models;
+﻿using SoftwareCenter.Api.Common;
+using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Api.Vendors.VendorManagement;
 
-public enum ApiResults {  NotFound, Unathorized, Succceded };
+
 public interface IManageVendors
 {
     Task<VendorDetailsModel> AddVendorAsync(VendorCreateModel request);

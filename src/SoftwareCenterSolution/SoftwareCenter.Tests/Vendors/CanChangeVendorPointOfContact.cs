@@ -3,7 +3,6 @@
 using System.Security.Claims;
 using Alba;
 using Alba.Security;
-using Microsoft.Extensions.Hosting;
 using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Tests.Vendors;
@@ -115,5 +114,11 @@ public class CanChangeVendorPointOfContact
             api.Put.Json(updatedPoc).ToUrl($"{url}/point-of-contact");
             api.StatusCodeShouldBe(403);
         });
+    }
+
+    [Fact(Skip = "Needed - Check to make sure of the authn/authz")]
+    public void AuthCheck()
+    {
+
     }
 }
