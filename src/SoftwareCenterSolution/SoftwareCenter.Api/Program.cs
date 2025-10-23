@@ -6,7 +6,15 @@ using SoftwareCenter.Api.Vendors.VendorManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication().AddJwtBearer();
 // Add services to the container.
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("software-center-manager", pol =>
+    {
+        // you can do whatever here. look them up in your database, whatever.
+        pol.RequireRole("SoftwareCenter");
+        pol.RequireRole("Manager"); 
+    });
 
 builder.Services.AddControllers(); // going to eat some of the time to start this api, and use some memory.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -43,7 +51,7 @@ builder.Services.AddMarten(config =>
 builder.Services.AddVendorServices();
 
 builder.Services.AddScoped<IManageVendors, MartenPostgresVendorManager>();
-
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 // after this line is configuring the HTTP "middleware" - how are actual requests and responses 
@@ -55,6 +63,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi(); 
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers(); // this uses .NET reflection to scan your application and read those

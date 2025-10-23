@@ -113,3 +113,14 @@ Software Center team members may add versions of catalog items.
 Software Center may deprecate a catalog items. (effectively retiring them, so they don't show up on the catalog)
 
 Any employee in the company can use our API to get a full list of the software catalog we currently support.
+
+- none of this stuff can be used unless you are verified (intentified) as an employee.
+- some employees are:
+  - members of the software center team
+    - and some of them are managers of that team
+
+  
+```http
+GET http://localhost:1337/vendors
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImplZmYiLCJzdWIiOiJqZWZmIiwianRpIjoiYWIyMGRmY2MiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyMzQ1MzQsImV4cCI6MTc2OTE4MzMzNCwiaWF0IjoxNzYxMjM0NTM3LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.KMXGN-9mOfzwX8UFLP43hhqhI7jXi9yj85Y70xxbhQ8
+```

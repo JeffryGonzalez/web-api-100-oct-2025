@@ -13,7 +13,7 @@ public static partial class VendorMappers
     public static partial VendorSummaryItem MapFromEntity(this VendorEntity entity);
 
     [MapValue(nameof(VendorEntity.Id), Use = nameof(GetVendorId))]
-    public static partial VendorEntity MapToEntity(this VendorCreateModel model);
+    public static partial VendorEntity MapToEntity(this VendorCreateModel model, string createdBy);
 
     public static partial VendorDetailsModel MapToResponse(this VendorEntity entity);
 

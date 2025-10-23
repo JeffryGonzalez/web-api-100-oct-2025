@@ -8,6 +8,7 @@ public class VendorEntity
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public VendorPointOfContact PointOfContact { get; set; } = new();
+    public string CreatedBy { get; set; } = string.Empty;
 }
 
 
