@@ -2,6 +2,7 @@
 using Marten;
 using SoftwareCenter.Api.Vendors;
 using SoftwareCenter.Api.Vendors.Models;
+using SoftwareCenter.Api.Vendors.VendorManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 

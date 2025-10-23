@@ -2,7 +2,7 @@
 using SoftwareCenter.Api.Vendors.Entities;
 using SoftwareCenter.Api.Vendors.Models;
 
-namespace SoftwareCenter.Api.Vendors;
+namespace SoftwareCenter.Api.Vendors.VendorManagement;
 
 public class MartenPostgresVendorManager(IDocumentSession session) : IManageVendors
 {

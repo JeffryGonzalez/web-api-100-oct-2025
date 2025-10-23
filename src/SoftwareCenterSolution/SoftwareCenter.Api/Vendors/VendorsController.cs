@@ -1,4 +1,5 @@
 ﻿using SoftwareCenter.Api.Vendors.Models;
+using SoftwareCenter.Api.Vendors.VendorManagement;
 
 namespace SoftwareCenter.Api.Vendors;
 
