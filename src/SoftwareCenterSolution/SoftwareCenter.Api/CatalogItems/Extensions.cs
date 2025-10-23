@@ -1,6 +1,7 @@
 ﻿using Marten;
 using SoftwareCenter.Api.CatalogItems.Endpoints;
 using SoftwareCenter.Api.CatalogItems.Entities;
+using SoftwareCenter.Api.CatalogItems.Models;
 
 namespace SoftwareCenter.Api.CatalogItems;
 
@@ -8,7 +9,7 @@ public static class Extensions
 {
     public static IServiceCollection AddCatalogItems(this IServiceCollection services)
     {
-        // add feature specific services here
+        services.AddScoped<CatalogItemCreateModelValidator>();
         return services;
     }
 
@@ -19,11 +20,17 @@ public static class Extensions
             var catalog = await session.Query<CatalogItem>().ToListAsync();
             return catalog;
         });
-        // whatever I map as part of this group is going to be at "/vendors";
+        
         var group = app.MapGroup("vendors");
-        // /vendors/934893489384/catalog
+        
         group.MapGet("/{vendorId:guid}/catalog", GetAllCatalogItemsForVendor.Handle);
-        group.MapPost("/{vendorId:guid}/catalog", AddingAVendor.Handle);
+        
+        group.MapPost("/{vendorId:guid}/catalog", AddCatalogItem.Handle)
+            .RequireAuthorization();
+        
+        group.MapDelete("/{vendorId:guid}/catalog/{catalogItemId:guid}", RemoveCatalogItem.Handle)
+            .RequireAuthorization();
+        
         return app;
     }
 }

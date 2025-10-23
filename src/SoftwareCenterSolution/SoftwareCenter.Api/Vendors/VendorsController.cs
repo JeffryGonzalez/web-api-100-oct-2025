@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using SoftwareCenter.Api.Vendors.Models;
 using SoftwareCenter.Api.Vendors.VendorManagement;
+using System.Security.Claims;
 
 namespace SoftwareCenter.Api.Vendors;
 
@@ -45,6 +46,39 @@ public class VendorsController(IManageVendors vendorManager) : ControllerBase
             null => NotFound(),
             _ => Ok(response)
         };
+    }
+    [Authorize(Policy = "software-center-manager")]
+    [HttpPut("/vendors/{vendorId:guid}/point-of-contact")]
+    public async Task<ActionResult> UpdatePointOfContactAsync(
+        Guid vendorId,
+        [FromBody] VendorPointOfContactUpdateModel request,
+        [FromServices] VendorPointOfContactUpdateModelValidator validator)
+    {
+        var validations = await validator.ValidateAsync(request);
+        if (!validations.IsValid)
+        {
+            return BadRequest(validations.Errors);
+        }
+
+        var userSub = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        if (string.IsNullOrEmpty(userSub))
+        {
+            return Unauthorized();
+        }
+
+        try
+        {
+            var response = await vendorManager.UpdatePointOfContactAsync(vendorId, request, userSub);
+            return response switch
+            {
+                null => NotFound(),
+                _ => Ok(response)
+            };
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return StatusCode(403, new { message = "Only the manager who created this vendor can update the point of contact" });
+        }
     }
 }
 

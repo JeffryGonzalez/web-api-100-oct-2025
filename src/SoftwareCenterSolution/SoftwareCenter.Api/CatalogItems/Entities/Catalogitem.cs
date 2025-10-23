@@ -6,4 +6,5 @@ public class CatalogItem
     public Guid VendorId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; }= string.Empty;
+    public string CreatedBy { get; set; } = string.Empty;
 }

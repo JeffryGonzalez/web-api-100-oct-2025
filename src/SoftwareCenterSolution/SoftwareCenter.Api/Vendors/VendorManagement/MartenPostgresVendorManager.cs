@@ -46,4 +46,35 @@ public class MartenPostgresVendorManager(IDocumentSession session, IHttpContextA
         };
 
     }
+
+    public async Task<VendorDetailsModel?> UpdatePointOfContactAsync(Guid vendorId, VendorPointOfContactUpdateModel request, string userSub)
+    {
+        var vendor = await session.Query<VendorEntity>()
+            .Where(v => v.Id == vendorId)
+            .SingleOrDefaultAsync();
+
+        if (vendor == null)
+        {
+            return null;
+        }
+
+        // Check if the user is the creator of this vendor
+        if (vendor.CreatedBy != userSub)
+        {
+            throw new UnauthorizedAccessException("Only the manager who created this vendor can update the point of contact");
+        }
+
+        // Update the point of contact
+        vendor.PointOfContact = new VendorPointOfContact
+        {
+            Name = request.Name,
+            EMail = request.EMail,
+            Phone = request.Phone
+        };
+
+        session.Update(vendor);
+        await session.SaveChangesAsync();
+
+        return vendor.MapToResponse();
+    }
 }
