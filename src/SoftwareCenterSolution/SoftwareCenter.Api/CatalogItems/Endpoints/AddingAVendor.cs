@@ -9,7 +9,7 @@ namespace SoftwareCenter.Api.CatalogItems.Endpoints;
 
 public static class AddingAVendor
 {
-    public static async Task<Results<Ok<CatalogItemDetails>, NotFound<string>>> Handle(
+    public static async Task<Results<Ok<CatalogItemDetails>, NotFound<string>, BadRequest<string>>> Handle(
         CatalogItemCreateModel request,
        MartenPostgresCatalogManager catalogManager,
         Guid vendorId
@@ -21,6 +21,7 @@ public static class AddingAVendor
         {
             ApiResults.NotFound => TypedResults.NotFound("No Vendor With That Id"),
             ApiResults.Succceded => TypedResults.Ok(response),
+            ApiResults.BadRequest => TypedResults.BadRequest($"Catalog Item with name {request.Name} already exists"),
             _ => throw new NotImplementedException()
         };
        

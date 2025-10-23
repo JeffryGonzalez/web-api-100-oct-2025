@@ -7,19 +7,19 @@ namespace SoftwareCenter.Api.CatalogItems.Endpoints;
 
 public static class DeletingACatalog
 {
-    public static async Task<Results<Ok<CatalogItem>, NotFound<string>>> Handle(
+    public static async Task<Results<Ok<CatalogItemEntity>, NotFound<string>>> Handle(
         Guid vendorId,
         Guid catalogItemId,
         IDocumentSession session
         ) 
     {
-        var doesCatalogExist = await session.Query<CatalogItem>().AnyAsync(c => c.VendorId == vendorId && c.Id == catalogItemId);
+        var doesCatalogExist = await session.Query<CatalogItemEntity>().AnyAsync(c => c.VendorId == vendorId && c.Id == catalogItemId);
         if (doesCatalogExist)
         {
-            var response = await session.Query<CatalogItem>()
+            var response = await session.Query<CatalogItemEntity>()
                 .Where(c => c.VendorId == vendorId && c.Id == catalogItemId)
-                .FirstAsync();
-            session.DeleteWhere<CatalogItem>(c => c.VendorId == vendorId && c.Id == catalogItemId);
+                .FirstOrDefaultAsync();
+            session.DeleteWhere<CatalogItemEntity>(c => c.VendorId == vendorId && c.Id == catalogItemId);
             return TypedResults.Ok(response);
         }
         else

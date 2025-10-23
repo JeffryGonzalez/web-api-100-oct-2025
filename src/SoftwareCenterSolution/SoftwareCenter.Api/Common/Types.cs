@@ -1,2 +1,2 @@
 ﻿namespace SoftwareCenter.Api.Common;
-public enum ApiResults { NotFound, Unathorized, Succceded };
+public enum ApiResults { NotFound, Unathorized, Succceded, BadRequest };
