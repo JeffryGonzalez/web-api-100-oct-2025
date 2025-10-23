@@ -15,21 +15,3 @@ public record VendorSummaryItem
     public string Name { get; set; } = string.Empty;
 }
 
-//public static class VendorSummaryItemMappers
-//{
-//    public static VendorSummaryItem MapFromEntity(this VendorEntity entity)
-//    {
-//        return new VendorSummaryItem
-//        {
-//            Id = entity.Id,
-//            Name = entity.Name,
-//        };
-//    }
-//}
-
-[Mapper]
-public static partial class VendorMappers
-{
-    public static partial IQueryable<VendorSummaryItem> ProjectToSummary(this IQueryable<VendorEntity> q);
-    public static partial VendorSummaryItem MapFromEntity(this VendorEntity entity);
-}

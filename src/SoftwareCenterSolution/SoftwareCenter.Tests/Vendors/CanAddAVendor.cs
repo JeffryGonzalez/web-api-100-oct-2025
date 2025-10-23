@@ -50,9 +50,6 @@ public class CanAddAVendor
         Assert.NotNull(getEntityReturned);
         Assert.Equal(postEntityReturned, getEntityReturned);
     }
-   // adding a vendor returns a success status code (probably a 201)
-
-    // adding a vendor saves it to the database, and we can verify that.
 
     // only managers of the software center can do this.
 
