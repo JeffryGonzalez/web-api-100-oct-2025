@@ -2,6 +2,9 @@
 using System.Security.Claims;
 using Alba;
 using Alba.Security;
+using Marten;
+using Microsoft.Extensions.DependencyInjection;
+using SoftwareCenter.Api.Vendors.Entities;
 using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Tests.Vendors;
@@ -15,16 +18,12 @@ public class CanAddAVendor
     {
         // You are authenticated, but NOT in the SoftwareCenter or Manager roles.
         var host = await AlbaHost.For<Program>((config) => {
-
-            config.ConfigureServices(sp =>
-            {
-                    // you can get the IDocumentsession here and store it in 
-                    // a variable and do what kyle said - make sure this wasn't added.
-
-            });
+            
         },
             new AuthenticationStub());
 
+     
+        
         var vendorToAdd = new VendorCreateModel
         {
             Name = "Microsoft",
@@ -48,10 +47,16 @@ public class CanAddAVendor
     [Fact]
     public async Task ManagersCanAddAVendor()
     {
-        var host = await AlbaHost.For<Program>((config) => { },
+        IDocumentSession? session = null;
+        var host = await AlbaHost.For<Program>((config) => {
+           
+        },
             new AuthenticationStub().WithName("Violet")
     
             );
+
+        var scope = host.Services.CreateScope();
+        session = scope.ServiceProvider.GetRequiredService<IDocumentSession>();
 
         var vendorToAdd = new VendorCreateModel
         {
@@ -79,6 +84,11 @@ public class CanAddAVendor
         Assert.True(postEntityReturned.Id != Guid.Empty);
         Assert.Equal(postEntityReturned.Name, vendorToAdd.Name);
         Assert.Equal(postEntityReturned.PointOfContact, vendorToAdd.PointOfContact);
+
+        var savedEntity = await session.Query<VendorEntity>().SingleOrDefaultAsync(v => v.Id == postEntityReturned.Id);
+
+        Assert.NotNull(savedEntity);
+        Assert.Equal("Violet", savedEntity.CreatedBy);
 
 
         var getResponse = await host.Scenario(api =>

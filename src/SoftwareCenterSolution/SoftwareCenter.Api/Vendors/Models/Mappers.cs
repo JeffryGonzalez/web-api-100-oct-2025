@@ -12,10 +12,25 @@ public static partial class VendorMappers
     [MapperIgnoreSource(nameof(VendorEntity.PointOfContact))]
     public static partial VendorSummaryItem MapFromEntity(this VendorEntity entity);
 
-    [MapValue(nameof(VendorEntity.Id), Use = nameof(GetVendorId))]
-    public static partial VendorEntity MapToEntity(this VendorCreateModel model, string createdBy);
+    //[MapValue(nameof(VendorEntity.Id), Use = nameof(GetVendorId))]
+    //public static partial VendorEntity MapToEntity(this VendorCreateModel model, string createdBy);
 
     public static partial VendorDetailsModel MapToResponse(this VendorEntity entity);
 
+   
+}
+
+public static class VenderManualMappers
+{
+    public static VendorEntity MapToEntity(this VendorCreateModel model, string createdBy)
+    {
+        return new VendorEntity
+        {
+            Id = GetVendorId(),
+            CreatedBy = createdBy,
+            Name = model.Name,
+            PointOfContact = model.PointOfContact,
+        };
+    }
     private static Guid GetVendorId() => Guid.NewGuid();
 }

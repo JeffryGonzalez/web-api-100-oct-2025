@@ -1,5 +1,6 @@
 
 using Marten;
+using SoftwareCenter.Api.CatalogItems;
 using SoftwareCenter.Api.Vendors;
 using SoftwareCenter.Api.Vendors.Models;
 using SoftwareCenter.Api.Vendors.VendorManagement;
@@ -53,6 +54,7 @@ builder.Services.AddVendorServices();
 builder.Services.AddScoped<IManageVendors, MartenPostgresVendorManager>();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddCatalogItems();
 var app = builder.Build();
 // after this line is configuring the HTTP "middleware" - how are actual requests and responses 
 // generated.
@@ -65,7 +67,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapCatalogItems();
 app.MapControllers(); // this uses .NET reflection to scan your application and read those
 // routing attributes and create the "routing table" - phone book.
 // Current Route Table:

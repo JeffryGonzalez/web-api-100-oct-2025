@@ -119,8 +119,41 @@ Any employee in the company can use our API to get a full list of the software c
   - members of the software center team
     - and some of them are managers of that team
 
-  
+
+
+## The Catalog Items
+
+### Find a Vendor
 ```http
 GET http://localhost:1337/vendors
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImplZmYiLCJzdWIiOiJqZWZmIiwianRpIjoiYWIyMGRmY2MiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyMzQ1MzQsImV4cCI6MTc2OTE4MzMzNCwiaWF0IjoxNzYxMjM0NTM3LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.KMXGN-9mOfzwX8UFLP43hhqhI7jXi9yj85Y70xxbhQ8
+```
+
+### Get a List of Catalog Items For That Vendor 
+
+```http
+GET http://localhost:1337/vendors/0679baa8-1533-4a20-9058-246f666f211e/catalog
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImplZmYiLCJzdWIiOiJqZWZmIiwianRpIjoiYWIyMGRmY2MiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyMzQ1MzQsImV4cCI6MTc2OTE4MzMzNCwiaWF0IjoxNzYxMjM0NTM3LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.KMXGN-9mOfzwX8UFLP43hhqhI7jXi9yj85Y70xxbhQ8
+```
+
+### Get All Catalog Items
+
+```http
+GET http://localhost:1337/catalog-items
+```
+
+- if that vendor doesn't exist, return a 404
+
+### Add A Catalog Item
+
+- Must be a member of the software team
+
+```http
+POST http://localhost:1337/vendors/0679baa8-1533-4a20-9058-246f666f211e/catalog
+Content-Type: application/json
+
+{
+  "name": "Visual Studio Code",
+  "description": "An Editor For Developers"
+}
 ```
