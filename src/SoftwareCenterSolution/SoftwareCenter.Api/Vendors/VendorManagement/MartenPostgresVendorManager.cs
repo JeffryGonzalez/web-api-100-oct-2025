@@ -46,4 +46,19 @@ public class MartenPostgresVendorManager(IDocumentSession session, IHttpContextA
         };
 
     }
+
+    public async Task<bool> UpdateVendorPocAsync(Guid id, VendorPointOfContact request)
+    {
+        var vendor = await session.Query<VendorEntity>().SingleOrDefaultAsync(v => v.Id == id);
+        if (vendor == null)
+        {
+            return false;
+        }
+        vendor.PointOfContact = request;
+        session.Store(vendor);
+
+
+        await session.SaveChangesAsync();
+        return true;
+    }
 }

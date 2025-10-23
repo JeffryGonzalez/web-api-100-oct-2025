@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Marten;
+using Microsoft.AspNetCore.Authorization;
+using SoftwareCenter.Api.Vendors.Entities;
 using SoftwareCenter.Api.Vendors.Models;
 using SoftwareCenter.Api.Vendors.VendorManagement;
 
@@ -45,6 +47,25 @@ public class VendorsController(IManageVendors vendorManager) : ControllerBase
             null => NotFound(),
             _ => Ok(response)
         };
+    }
+
+    [HttpPut("/vendors/{id:guid}/point-of-contact")]
+    public async Task<ActionResult> UpdatePoc(Guid id, 
+        [FromBody] VendorPointOfContact request
+        
+        )
+    {
+
+        bool updated = await vendorManager.UpdateVendorPocAsync(id, request);
+
+        if (updated)
+        {
+
+            return Accepted();
+        } else
+        {
+            return NotFound();
+        }
     }
 }
 
