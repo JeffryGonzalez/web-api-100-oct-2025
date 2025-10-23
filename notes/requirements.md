@@ -132,7 +132,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6I
 ### Get a List of Catalog Items For That Vendor 
 
 ```http
-GET http://localhost:1337/vendors/0679baa8-1533-4a20-9058-246f666f211e/catalog
+GET http://localhost:1337/vendors/109acd9e-ce3e-43f5-88c1-d9658a87433f/catalog
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImplZmYiLCJzdWIiOiJqZWZmIiwianRpIjoiYWIyMGRmY2MiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3NjEyMzQ1MzQsImV4cCI6MTc2OTE4MzMzNCwiaWF0IjoxNzYxMjM0NTM3LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.KMXGN-9mOfzwX8UFLP43hhqhI7jXi9yj85Y70xxbhQ8
 ```
 

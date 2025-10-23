@@ -55,7 +55,9 @@ public class CanAddAVendor
     
             );
 
-        var scope = host.Services.CreateScope();
+        // I want to check the database to make sure the name of the person that created this is saved in the database.
+        // IDocumentSession is a scoped service. So I need to create a scope.
+        using var scope = host.Services.CreateScope(); // dispose the scope at the end of the test.
         session = scope.ServiceProvider.GetRequiredService<IDocumentSession>();
 
         var vendorToAdd = new VendorCreateModel
@@ -85,9 +87,9 @@ public class CanAddAVendor
         Assert.Equal(postEntityReturned.Name, vendorToAdd.Name);
         Assert.Equal(postEntityReturned.PointOfContact, vendorToAdd.PointOfContact);
 
-        var savedEntity = await session.Query<VendorEntity>().SingleOrDefaultAsync(v => v.Id == postEntityReturned.Id);
+        // Query the database to check the CreatedBy=="Violet"
+        var savedEntity = await session.Query<VendorEntity>().SingleAsync(v => v.Id == postEntityReturned.Id);
 
-        Assert.NotNull(savedEntity);
         Assert.Equal("Violet", savedEntity.CreatedBy);
 
 

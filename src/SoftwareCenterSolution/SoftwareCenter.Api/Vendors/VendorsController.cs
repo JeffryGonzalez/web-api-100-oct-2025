@@ -5,15 +5,18 @@ using SoftwareCenter.Api.Vendors.VendorManagement;
 namespace SoftwareCenter.Api.Vendors;
 
 [Authorize]
+
 public class VendorsController(IManageVendors vendorManager) : ControllerBase
 {
 
+  
 
     [HttpGet("/vendors")]
     public async Task<ActionResult> GetAllVendorsAsync()
     {
         var user = User.Identity;
         var response = await vendorManager.GetAllVendorsAsync();
+       // return NotFound();
         return Ok(response);  
     }
     [Authorize(Policy = "software-center-manager")]

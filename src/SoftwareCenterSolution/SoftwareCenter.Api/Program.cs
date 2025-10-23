@@ -1,7 +1,9 @@
 
 using Marten;
 using SoftwareCenter.Api.CatalogItems;
+using SoftwareCenter.Api.CatalogItems.Entities;
 using SoftwareCenter.Api.Vendors;
+using SoftwareCenter.Api.Vendors.Entities;
 using SoftwareCenter.Api.Vendors.Models;
 using SoftwareCenter.Api.Vendors.VendorManagement;
 
@@ -14,7 +16,7 @@ builder.Services.AddAuthorizationBuilder()
     {
         // you can do whatever here. look them up in your database, whatever.
         pol.RequireRole("SoftwareCenter");
-        pol.RequireRole("Manager"); 
+        pol.RequireRole("Manager");
     });
 
 builder.Services.AddControllers(); // going to eat some of the time to start this api, and use some memory.
@@ -25,7 +27,7 @@ builder.Services.AddOpenApi();
 
 // ask my environment for the connection string to my database
 
-var connectionString = builder.Configuration.GetConnectionString("software") ?? 
+var connectionString = builder.Configuration.GetConnectionString("software") ??
     throw new Exception("No software connection string found!");
 
 
@@ -42,6 +44,8 @@ var connectionString = builder.Configuration.GetConnectionString("software") ??
 builder.Services.AddMarten(config =>
 {
     config.Connection(connectionString);
+    config.RegisterDocumentType<VendorEntity>();
+    config.RegisterDocumentType<CatalogItem>();
 }).UseLightweightSessions();
 // It will provide an object that implements A context class.
 // IDocumentSession
@@ -62,7 +66,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi(); 
+    app.MapOpenApi();
 }
 
 app.UseAuthentication();
@@ -81,6 +85,8 @@ app.MapControllers(); // this uses .NET reflection to scan your application and 
 // GET requests to /vendors/{id} where id loooks like a Guid
 //  - create the VendorsController
 //  - call the GetVendorById method with that id from the url.
+
+
 
 app.Run(); // kestrel web server 
 
