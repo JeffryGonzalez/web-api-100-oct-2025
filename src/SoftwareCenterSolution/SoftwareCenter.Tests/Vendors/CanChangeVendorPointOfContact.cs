@@ -3,10 +3,11 @@
 using System.Security.Claims;
 using Alba;
 using Alba.Security;
+using Microsoft.Extensions.Hosting;
 using SoftwareCenter.Api.Vendors.Models;
 
 namespace SoftwareCenter.Tests.Vendors;
-[Trait("Categor", "System")]
+[Trait("Category", "System")]
 public class CanChangeVendorPointOfContact
 {
     [Fact]
@@ -65,5 +66,54 @@ public class CanChangeVendorPointOfContact
         Assert.NotNull(getBodyResponse);
 
         Assert.Equal(updatedPoc, getBodyResponse.PointOfContact);
+    }
+
+    [Fact()]
+    public async Task CannotChangeAVendorYouDidNotCreate()
+    {
+        var briannaHost = await AlbaHost.For<Program>(config => { }, new AuthenticationStub().WithName("George"));
+
+        var originalPoc = new VendorPointOfContact
+        {
+            Name = "Carl",
+            EMail = "carl@company.com"
+        };
+        var updatedPoc = new VendorPointOfContact
+        {
+            Name = "Brianna",
+            Phone = "800 999-9999"
+        };
+        var vendorToCreate = new VendorCreateModel
+        {
+            Name = "Jetbrains",
+            PointOfContact = originalPoc
+        };
+
+        var postResponse = await briannaHost.Scenario(api =>
+        {
+
+            api.WithClaim(new Claim(ClaimTypes.Role, "SoftwareCenter"));
+            api.WithClaim(new Claim(ClaimTypes.Role, "Manager"));
+            api.Post.Json(vendorToCreate).ToUrl("/vendors");
+            api.StatusCodeShouldBe(201);
+        });
+
+        var postResponseBody = postResponse.ReadAsJson<VendorDetailsModel>();
+        Assert.NotNull(postResponseBody);
+
+        var url = $"/vendors/{postResponseBody.Id}";
+
+
+
+        var otherManagerHost = await AlbaHost.For<Program>(config => { }, new AuthenticationStub().WithName("Paul"));
+
+        await otherManagerHost.Scenario(api =>
+        {
+
+            api.WithClaim(new Claim(ClaimTypes.Role, "SoftwareCenter"));
+            api.WithClaim(new Claim(ClaimTypes.Role, "Manager"));
+            api.Put.Json(updatedPoc).ToUrl($"{url}/point-of-contact");
+            api.StatusCodeShouldBe(403);
+        });
     }
 }
