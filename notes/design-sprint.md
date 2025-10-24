@@ -13,14 +13,3 @@ What would you return if it is not unique?
     note: Names of catalog items only have to be unique per vendor. Different vendors can have items with the same names.
 
 Sketch out how you would implement this in your API here, and/or code it up.
-
-```http
-Delete http://localhost:1338/api/shows
-Content-Type: application/json
-
-{
-    "name":"Twin Peaks the Return",
-    "description":"David Lynch at his best",
-    "streamingService":"Amazon Prime"
-}
-```
