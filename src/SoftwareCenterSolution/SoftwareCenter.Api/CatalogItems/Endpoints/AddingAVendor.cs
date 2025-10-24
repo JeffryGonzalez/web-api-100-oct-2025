@@ -1,9 +1,6 @@
-﻿using Marten;
-using Microsoft.AspNetCore.Http.HttpResults;
-using SoftwareCenter.Api.CatalogItems.Entities;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using SoftwareCenter.Api.CatalogItems.Models;
 using SoftwareCenter.Api.CatalogItems.Services;
-using SoftwareCenter.Api.Vendors.Entities;
 
 namespace SoftwareCenter.Api.CatalogItems.Endpoints;
 
