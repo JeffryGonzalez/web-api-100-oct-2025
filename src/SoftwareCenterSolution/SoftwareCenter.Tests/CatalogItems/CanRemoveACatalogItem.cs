@@ -6,10 +6,10 @@ using SoftwareCenter.Api.CatalogItems.Models;
 using SoftwareCenter.Api.Vendors.Models;
 using System.Security.Claims;
 
-namespace SoftwareCenter.Tests.Vendors;
+namespace SoftwareCenter.Tests.CatalogItems;
 
 [Trait("Category", "System")]
-public class CanRemoveACataLogItem
+public class CanRemoveACatalogItem
 {
 
 	[Fact]
@@ -33,7 +33,7 @@ public class CanRemoveACataLogItem
 	}
 
 	[Fact]
-	public async Task CanRemoveACatalogItem()
+	public async Task CanRemoveACatalogItems()
 	{
 		IDocumentSession? session = null;
 		var host = await AlbaHost.For<Program>((config) => {
@@ -79,8 +79,8 @@ public class CanRemoveACataLogItem
 		var postCatalogItems = await host.Scenario(api =>
 		{
 			api.Post.Json(catalogItemToAdd).ToUrl($"/vendors/{postEntityReturned.Id}/catalog");
-			//api.WithClaim(new Claim(ClaimTypes.Role, "SoftwareCenter"));
-			//api.WithClaim(new Claim(ClaimTypes.Role, "Manager"));
+			api.WithClaim(new Claim(ClaimTypes.Role, "SoftwareCenter"));
+			api.WithClaim(new Claim(ClaimTypes.Role, "Manager"));
 			api.StatusCodeShouldBeOk();
 		});
 
