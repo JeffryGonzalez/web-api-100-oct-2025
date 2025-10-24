@@ -1,13 +1,10 @@
-﻿using Marten;
-using Microsoft.AspNetCore.Http.HttpResults;
-using SoftwareCenter.Api.CatalogItems.Entities;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 using SoftwareCenter.Api.CatalogItems.Models;
 using SoftwareCenter.Api.CatalogItems.Services;
-using SoftwareCenter.Api.Vendors.Entities;
 
 namespace SoftwareCenter.Api.CatalogItems.Endpoints;
 
-public static class AddingAVendor
+public static class AddingACatalogItem
 {
     public static async Task<Results<Ok<CatalogItemDetails>, NotFound<string>>> Handle(
         CatalogItemCreateModel request,
