@@ -11,17 +11,18 @@ public static class RemovingACatalogItem
 
 	public static async Task<Results<Ok, NotFound<string>>> Handle(
 		Guid vendorId,
-		Guid catalogItemId,
+		Guid catalogId,
 		IDocumentSession session
 	)
 	{
 
-		var doesVendorAndCatalogItemExist = await session.Query<CatalogItemEntity>().AnyAsync(c => c.VendorId == vendorId && c.Id == catalogItemId);
+		var doesVendorAndCatalogItemExist = await session.Query<CatalogItemEntity>()
+			.AnyAsync(c => c.VendorId == vendorId && c.Id == catalogId);
 
 		if (doesVendorAndCatalogItemExist)
 		{
 			var response = await session.Query<CatalogItemEntity>()
-				.Where(c => c.VendorId == vendorId && c.Id == catalogItemId)
+				.Where(c => c.VendorId == vendorId && c.Id == catalogId)
 				.FirstOrDefaultAsync();
 
 			session.Delete<CatalogItemEntity>(response);

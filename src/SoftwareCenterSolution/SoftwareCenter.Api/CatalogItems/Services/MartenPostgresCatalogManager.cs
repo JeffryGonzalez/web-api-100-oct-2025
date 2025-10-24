@@ -13,10 +13,12 @@ public class MartenPostgresCatalogManager(IDocumentSession session)
               .Where(v => v.Id == vendorId)
               .Select(v => v.Name)
               .SingleOrDefaultAsync();
+
         if (vendorName == null)
         {
            return  (ApiResults.NotFound, null);
         }
+
         var entity = new CatalogItemEntity
         {
             Id = Guid.NewGuid(),
